@@ -185,4 +185,4 @@ if not os.path.exists(app.config["UPLOAD_FOLDER"]):
 
 # Run the app
 if __name__ == "__main__":
-    app.run(debug=True)
+    app.run(debug=False,  host='0.0.0.0')
