@@ -7,6 +7,11 @@ from itsdangerous import URLSafeSerializer
 from werkzeug.utils import secure_filename
 from pymongo import MongoClient
 import magic
+import dns.resolver  # Ensure `dnspython` is installed
+
+# Update DNS resolver (optional, if local DNS issues are suspected)
+dns.resolver.default_resolver = dns.resolver.Resolver(configure=False)
+dns.resolver.default_resolver.nameservers = ['8.8.8.8']  # Use Google's DNS
 
 # App setup
 app = Flask(__name__)
@@ -23,8 +28,12 @@ jwt = JWTManager(app)
 mail = Mail(app)
 serializer = URLSafeSerializer("secret-key")  # Replace with a strong secret key
 
-# MongoDB setup
-client = MongoClient("mongodb://localhost:27017/")
+# MongoDB setup (Updated for compatibility)
+uri = "mongodb+srv://chinnasivakrishna2003:siva@cluster0.u7gjmpo.mongodb.net/file_sharing_system?retryWrites=true&w=majority"
+client = MongoClient(uri)
+
+# Test connection
+print(client.list_database_names())
 db = client["file_sharing_system"]
 users_collection = db["users"]
 files_collection = db["files"]
