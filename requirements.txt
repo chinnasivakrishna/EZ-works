@@ -6,3 +6,4 @@ werkzeug==2.2.2
 pymongo==4.3.3
 python-magic==0.4.26
 itsdangerous==2.1.2
+dnspython==2.4.2
