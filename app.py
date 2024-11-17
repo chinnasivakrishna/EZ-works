@@ -31,9 +31,6 @@ serializer = URLSafeSerializer("secret-key")  # Replace with a strong secret key
 # MongoDB setup (Updated for compatibility)
 uri = "mongodb+srv://chinnasivakrishna2003:siva@cluster0.u7gjmpo.mongodb.net/file_sharing_system?retryWrites=true&w=majority"
 client = MongoClient(uri)
-
-# Test connection
-print(client.list_database_names())
 db = client["file_sharing_system"]
 users_collection = db["users"]
 files_collection = db["files"]
@@ -156,6 +153,7 @@ class DownloadFile(Resource):
         if not os.path.exists(file_path):
             return {"message": "File not found on server"}, 404
 
+        # Generate token for download
         download_url = serializer.dumps({"filename": filename, "user_email": user_email})
         return {"download_link": f"http://localhost:5000/download/{download_url}"}, 200
 
@@ -163,20 +161,33 @@ class DownloadFile(Resource):
 class ServeFile(Resource):
     def get(self, token):
         try:
+            # Decode the token
             data = serializer.loads(token)
-            filename = data["filename"]
-            user_email = data["user_email"]
+            filename = data.get("filename")
+            user_email = data.get("user_email")
 
-            file = files_collection.find_one({"filename": filename})
+            # Debugging output
+            print(f"Decoded token: filename={filename}, user_email={user_email}")
 
-            if not file:
-                return {"message": "File not found"}, 404
+            # Validate filename and user_email
+            if not filename:
+                return {"message": "Invalid file in token"}, 400
+            if not user_email:
+                return {"message": "Invalid user in token"}, 400
 
-            file_path = os.path.join(app.config["UPLOAD_FOLDER"], filename)
+            # Construct file path
+            file_path = os.path.abspath(os.path.join(app.config["UPLOAD_FOLDER"], filename))
+            print(f"Absolute file path: {file_path}")
+
+            # Check if file exists at the specified path
+            if not os.path.exists(file_path):
+                return {"message": f"File '{filename}' not found on the server."}, 404
+
             return send_file(file_path, as_attachment=True)
 
         except Exception as e:
-            return {"message": "Invalid or expired token."}, 400
+            print(f"Error during file download: {e}")
+            return {"message": "Invalid or expired token"}, 400
 
 
 # API Routes
@@ -186,7 +197,7 @@ api.add_resource(Login, "/login")
 api.add_resource(UploadFile, "/upload")
 api.add_resource(ListFiles, "/list-files")
 api.add_resource(DownloadFile, "/download/<string:filename>")
-api.add_resource(ServeFile, "/download/<string:token>")
+api.add_resource(ServeFile, "/downloadfile/<string:token>")
 
 # Create uploads folder if not exists
 if not os.path.exists(app.config["UPLOAD_FOLDER"]):
@@ -194,4 +205,4 @@ if not os.path.exists(app.config["UPLOAD_FOLDER"]):
 
 # Run the app
 if __name__ == "__main__":
-    app.run(debug=False,  host='0.0.0.0')
+    app.run(debug=True, host='0.0.0.0')
