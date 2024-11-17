@@ -48,7 +48,7 @@ def allowed_file(filename):
 
 
 def send_verification_email(email, token):
-    link = f"http://localhost:5000/verify-email/{token}"
+    link = f"https://ez-works-gmne.onrender.com/verify-email/{token}"
     msg = Message("Verify Your Email", sender="your-email@gmail.com", recipients=[email])
     msg.body = f"Click the link to verify your email: {link}"
     mail.send(msg)
@@ -155,7 +155,7 @@ class DownloadFile(Resource):
 
         # Generate token for download
         download_url = serializer.dumps({"filename": filename, "user_email": user_email})
-        return {"download_link": f"http://localhost:5000/download/{download_url}"}, 200
+        return {"download_link": f"https://ez-works-gmne.onrender.com/download/{download_url}"}, 200
 
 
 class ServeFile(Resource):
