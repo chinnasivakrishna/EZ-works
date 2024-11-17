@@ -155,7 +155,7 @@ class DownloadFile(Resource):
 
         # Generate token for download
         download_url = serializer.dumps({"filename": filename, "user_email": user_email})
-        return {"download_link": f"https://ez-works-gmne.onrender.com/download/{download_url}"}, 200
+        return {"download_link": f"https://ez-works-gmne.onrender.com/downloadfile/{download_url}"}, 200
 
 
 class ServeFile(Resource):
