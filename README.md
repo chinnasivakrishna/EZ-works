@@ -57,6 +57,19 @@ This Flask-based File Sharing API allows users to upload, list, and download fil
 
 ---
 
+## Ops User Login Credentials
+
+To test file upload functionality, use the following Ops User credentials to log in and obtain a JWT:
+
+```json
+{
+    "email": "user@gmail.com",
+    "password": "password123"
+}
+```
+
+---
+
 ## Deployment
 
 This app is deployed at:
@@ -171,4 +184,4 @@ If something goes wrong, the API will return a descriptive message. For example:
 - All file uploads are validated to ensure only `.pptx`, `.docx`, and `.xlsx` files are allowed.
 - The app only allows users with specific roles (Ops Users) to upload files.
 
----
+--- 
