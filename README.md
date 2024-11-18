@@ -71,8 +71,7 @@ You can access the API and perform requests using the provided Postman collectio
 
 You can import the following Postman collection to test the API:
 
-**[Postman Collection](https://www.getpostman.com/collections/)**  
-(Replace with actual Postman collection link if needed)
+**[Postman Collection](https://web.postman.co/workspace/My-Workspace~d1061c07-65cf-4949-82b2-9a2f8e064dd4/collection/31655496-40eb47a3-0dc9-45af-a163-89131a38fcde?action=share&source=copy-link&creator=31655496&active-environment=96b4c8e7-5040-474c-9c58-6304e03eccc7)**  
 
 ---
 
